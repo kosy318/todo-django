@@ -1,0 +1,27 @@
+{%  extends 'main/common/header.html' %} <!-- header.html을 상속하겠다 -->
+{% block main %}
+	<div class="container text-center pt-5">
+		<h1>{{ todo.title }}</h1>
+
+		<br>
+		<table class="table table-bordered">
+			<TR>
+				<TH>DONE</TH>
+				<TD>{{ todo.is_complete }}</TD>
+			</TR>
+			<TR>
+				<TH>due date</TH>
+				<TD>{{ todo.end_date }}</TD>
+			</TR>
+			<TR>
+				<TH>CONTENT</TH>
+				<TD COLSPAN=3>{{ todo.content }}</TD>
+			</TR>
+		</TABLE>
+		<a href="complete?num=${ todo.num }">완료</a>&nbsp;&nbsp;
+		<a href="modify?num=${ todo.num }">수정하기</a>&nbsp;&nbsp;
+		<a href="delete?num=${ todo.num }">삭제하기</a>&nbsp;&nbsp;
+		<a href="list">초기화면</a>
+		 <br> <br>
+	</div>
+{% endblock main %}

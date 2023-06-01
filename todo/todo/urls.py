@@ -21,9 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', include('main.urls')),
-    path('index/', include('main.urls')),
-    path('home/', include('main.urls')),
 
     # board app
-    # path('board/', include('board.urls')),
+    path('board/', include('board.urls')),
 ]

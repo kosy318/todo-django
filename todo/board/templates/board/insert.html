@@ -1,0 +1,15 @@
+{%  extends 'main/common/header.html' %} <!-- header.html을 상속하겠다 -->
+{% block main %}
+    <div class="container text-center pt-5">
+		<h1>할 일 추가</h1>
+		<form method="POST" class="post-form" action="{%  url 'board:board_insert' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+			<button type="submit" class="btn btn-info">Submit</button>
+		</form>
+		<a href="list">전체화면</a>
+		<br>
+		<br>
+	</div>
+{% endblock main %}

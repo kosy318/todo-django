@@ -1,0 +1,67 @@
+{%  extends 'main/common/header.html' %} <!-- header.html을 상속하겠다 -->
+{% block main %}
+	<div class="container text-center pt-5">
+		<h1>오늘 할 일</h1>
+		<div class="text-right mb-2">
+			<div class="btn-group">
+				<a type="button" href="{% url 'board:board_insert' %}" class="btn btn-info" role="button">할 일 추가</a>
+				<a type="button" href="{% url 'board:board_detail' pk=list.no %}" class="btn btn-info" role="button">전체 삭제</a>
+			</div>
+		</div>
+		<form class="form-inline mb-2 float-right" action="searchAll" method="get">
+			<select class="form-control" name="search" id="search" onchange="selectChange()">
+				<option value="content" selected="selected">내용</option>
+				<option value="date">날짜</option>
+			</select>&nbsp;&nbsp; <input id="word" class="form-control mr-sm-2" type="text"
+				name="word">
+			<button class="btn btn-info my-2 my-sm-0" type="submit">검색</button>
+		</form>
+		<br>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>번호</th>
+					<th>주제</th>
+					<th>날짜</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+                {% for item in todo_list %}
+                    {% with i=forloop.counter0 %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            {% if item.is_complete == False %}
+                                <td><a href="read?num={{ item.no }}">{{ item.title }}</a></td>
+                            {% endif %}
+                            {% if item.is_complete == True %}
+                                <td><a href="read?num={{ item.no }}"><del>{{ item.title }}</del></a></td>
+                            {% endif %}
+                            <td>{{ item.end_date }}</td>
+                            {% if item.is_complete == False %}
+                                <td><input onchange="window.location.href='change?done={{ item.is_complete }}&num={{ item.no }}'"
+                                           class="form-check-input" name="done" type="checkbox"></td>
+                            {% endif %}
+                            {% if item.is_complete == True %}
+                                <td><input onchange="window.location.href='change?done={{ item.is_complete }}&num={{ item.no }}'"
+                                           class="form-check-input" name="done" type="checkbox" checked="checked"></td>
+                            {% endif %}
+                        </tr>
+                    {% endwith %}
+                {% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+	<script>
+		function selectChange(){
+			select = document.querySelector("#search");
+			if(select.value === "date"){
+				document.querySelector("#word").setAttribute("type", "date");
+			}else{
+				document.querySelector("#word").setAttribute("type", "text");
+			}
+		}
+	</script>
+{% endblock main %}
