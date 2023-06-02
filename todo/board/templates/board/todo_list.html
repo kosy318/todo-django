@@ -6,9 +6,26 @@
 }
 
 .list-group {
-    height: 1000px;
+    height: 100vh;
 }
+
+.title{
+    font-weight: bold;
+    font-size: 1.3em;
+    margin-bottom: 0.7rem;
+}
+
+.list-group-item:hover {
+    filter: brightness(90%);
+}
+
 </style>
+
+<script>
+function moveToDetail(element) {
+    window.location.href = element.getAttribute("data-url");
+}
+</script>
 
 <div class="container text-center pt-5">
     <h1>오늘 할 일</h1>
@@ -30,6 +47,7 @@
 {#        <strong>마감이 가까운 일정!</strong> {{ close_end_day }}#}
 {#    </div>#}
 {#    {% endif %}#}
+
     <br>
     <div class="row">
         <div class="col-md-4">
@@ -37,8 +55,8 @@
                 <h2>기한 있는 일정</h2><br>
                 <div id="todo_list_endDate" class="list-group col">
                     {% for list in todo_list_endDate_non_complete %}
-                    <div class="list-group-item" div_pk="{{ list.no }}" priority="{{ list.priority }}">
-                        <a href="{% url 'board:board_detail' pk=list.no %}">{{ list.title }}</a>
+                    <div class="list-group-item" div_pk="{{ list.no }}" onclick="moveToDetail(this)" data-url="{% url 'board:board_detail' pk=list.no %}">
+                        <div class="title">{{ list.title }}</div>
                         <p>{{ list.end_date }}</p>
                     </div>
                     {% endfor %}
@@ -52,8 +70,8 @@
                 <div id="todo_list_no_endDate" class="list-group col">
                     {% with end_date="마감일 없음" %}
                     {% for list in todo_list_no_endDate %}
-                    <div class="list-group-item" div_pk="{{ list.no }}">
-                        <a href="{% url 'board:board_detail' pk=list.no %}">{{ list.title }}</a>
+                    <div class="list-group-item" div_pk="{{ list.no }}" onclick="moveToDetail(this)" data-url="{% url 'board:board_detail' pk=list.no %}">
+                        <div class="title">{{ list.title }}</div>
                         <p>{{ end_date }}</p>
                     </div>
                     {% endfor %}
@@ -69,13 +87,13 @@
                     {% with end_date="마감일 없음" %}
                     {% for list in todo_list_endDate_complete %}
                     {% if list.end_date == None %}
-                    <div class="list-group-item list-group-item-success" div_pk="{{ list.no }}" draggable="true">
-                        <a href="{% url 'board:board_detail' pk=list.no %}">{{ list.title }}</a>
+                    <div class="list-group-item list-group-item-success" div_pk="{{ list.no }}" onclick="moveToDetail(this)" data-url="{% url 'board:board_detail' pk=list.no %}">
+                        <div class="title">{{ list.title }}</div>
                         <p>{{ end_date }}</p>
                     </div>
                     {% else %}
-                    <div class="list-group-item list-group-item-success" div_pk="{{ list.no }}" draggable="true">
-                        <a href="{% url 'board:board_detail' pk=list.no %}">{{ list.title }}</a>
+                    <div class="list-group-item list-group-item-success" div_pk="{{ list.no }}" onclick="moveToDetail(this)" data-url="{% url 'board:board_detail' pk=list.no %}">
+                        <div class="title">{{ list.title }}</div>
                         <p>{{ list.end_date }}</p>
                     </div>
                     {% endif %}
@@ -114,10 +132,14 @@
 
                     // 드롭한 아이템의 내용
                     let content = droppedItem.html();
+                    let data_url = originalItem.attr("data-url");
 
                     if (isCompleted) {
                         // 마감된 일정에 추가
                         let newElement = $("<div class='list-group-item list-group-item-success' div_pk='" + originalItem.attr("div_pk") + "'>" + content + "</div>");
+                        newElement.attr("onclick", "moveToDetail(this)");
+                        newElement.attr("data-url", data_url);
+
                         $("#completed_list").append(newElement);
                        makeDraggableAndDroppable($("#completed_list .list-group-item"), $("#completed_list"), true);
                     } else {
@@ -125,11 +147,17 @@
                         if (originalItem.find("p").text() !== "마감일 없음") {
                             // 드롭한 아이템을 기한 있는 일정 목록에 추가
                             let newElement = $("<div class='list-group-item' div_pk='" + originalItem.attr("div_pk") + "'>" + content + "</div>");
+                            newElement.attr("onclick", "moveToDetail(this)");
+                            newElement.attr("data-url", data_url);
+
                             $("#todo_list_endDate").append(newElement);
                             makeDraggableAndDroppable($("#todo_list_endDate .list-group-item"), $("#todo_list_endDate"), false);
                         } else {
                             // 드롭한 아이템을 기한 없는 일정 목록에 추가
                             let newElement = $("<div class='list-group-item' div_pk='" + originalItem.attr("div_pk") + "'>" + content + "</div>");
+                            newElement.attr("onclick", "moveToDetail(this)");
+                            newElement.attr("data-url", data_url);
+
                             $("#todo_list_no_endDate").append(newElement);
                             makeDraggableAndDroppable($("#todo_list_no_endDate .list-group-item"), $("#todo_list_no_endDate"), false);
                         }
