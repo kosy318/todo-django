@@ -5,7 +5,7 @@
 		<div class="text-right mb-2">
 			<div class="btn-group">
 				<a type="button" href="{% url 'board:board_insert' %}" class="btn btn-info" role="button">할 일 추가</a>
-				<a type="button" href="{% url 'board:board_detail' pk=list.no %}" class="btn btn-info" role="button">전체 삭제</a>
+{#				<a type="button" href="{% url 'board:board_detail' pk=list.no %}" class="btn btn-info" role="button">전체 삭제</a>#}
 			</div>
 		</div>
 		<form class="form-inline mb-2 float-right" action="searchAll" method="get">
@@ -33,10 +33,10 @@
                         <tr>
                             <td>{{ forloop.counter }}</td>
                             {% if item.is_complete == False %}
-                                <td><a href="read?num={{ item.no }}">{{ item.title }}</a></td>
+                                <td><a href="{% url 'board:board_detail' pk=item.no %}">{{ item.title }}</a></td>
                             {% endif %}
                             {% if item.is_complete == True %}
-                                <td><a href="read?num={{ item.no }}"><del>{{ item.title }}</del></a></td>
+                                <td><a href="{% url 'board:board_detail' pk=item.no %}"><del>{{ item.title }}</del></a></td>
                             {% endif %}
                             <td>{{ item.end_date }}</td>
                             {% if item.is_complete == False %}

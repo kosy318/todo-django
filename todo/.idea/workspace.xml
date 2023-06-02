@@ -5,23 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9af5f2e7-f979-450d-8350-aea3903b6aa0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/board/forms.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/board/templates/board/board_detail.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/board/templates/board/insert.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/board/templates/board/succeed.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/board/templates/board/todo_list.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/board/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main/templates/main/common/header.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/todo.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/todo.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/board/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/board/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/board/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/board/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/templates/main/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/main/templates/main/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/main/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/todo/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/todo/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board/templates/board/board_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/board/templates/board/board_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board/templates/board/todo_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/board/templates/board/todo_list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/todo/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/todo/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -94,7 +80,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1685610571770</updated>
-      <workItem from="1685610573190" duration="6632000" />
+      <workItem from="1685610573190" duration="8498000" />
     </task>
     <servers />
   </component>
