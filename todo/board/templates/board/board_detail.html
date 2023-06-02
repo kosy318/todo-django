@@ -5,10 +5,17 @@
 
 		<br>
 		<table class="table table-bordered">
+            {% if todo.is_complete == true %}
 			<TR>
 				<TH>DONE</TH>
-				<TD>{{ todo.is_complete }}</TD>
+				<TD>N</TD>
 			</TR>
+            {% else %}
+			<TR>
+				<TH>DONE</TH>
+				<TD>Y</TD>
+			</TR>
+            {% endif %}
 			<TR>
 				<TH>due date</TH>
 				<TD>{{ todo.end_date }}</TD>
@@ -20,8 +27,8 @@
 		</TABLE>
 {#		<a href="complete?num=${ todo.num }">완료</a>&nbsp;&nbsp;#}
 		<a href="{% url 'board:board_update' pk=todo.no %}">수정하기</a>&nbsp;&nbsp;
-{#		<a href="delete?num=${ todo.num }">삭제하기</a>&nbsp;&nbsp;#}
-{#		<a href="list">초기화면</a>#}
+		<a href="{% url 'board:board_delete' pk=todo.no %}">삭제하기</a>&nbsp;&nbsp;
+		<a href="{% url 'board:board' %}">초기화면</a>
 		 <br> <br>
 	</div>
 {% endblock main %}

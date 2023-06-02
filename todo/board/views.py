@@ -13,6 +13,21 @@ class Todo_board(generic.TemplateView):
         return render(request, template_name, {"todo_list": todo_list})
 
 
+def check_post(request):
+    template_name = 'board/succeed.html'
+
+    if request.method == 'POST':
+        form = TodoForm(request.POST)
+        if form.is_valid():
+            message = "일정을 추가하였습니다."
+            todo = form.save(commit=False)
+            todo.todo_save()
+            return render(request, template_name, {"message": message})
+    template_name = 'board/insert.html'
+    form = TodoForm(initial={"is_complete": 0})
+    return render(request, template_name, {"form": form})
+
+
 class Board_detail(generic.DetailView):
     model = TodoList
     template_name = 'board/board_detail.html'
@@ -33,23 +48,13 @@ class Board_update(generic.UpdateView):
     def get(self, request, *args, **kwargs):
         # 오브젝트를 받아와서 폼 클래스를 받아온 후 return
         self.object = self.get_object()
-        form_class = self.get_form_class()
-        form = self.get_form(form_class)
+        form = self.get_form(TodoForm)
 
         context = self.get_context_data(object=self.object, form=form)
         return self.render_to_response(context)
 
 
-def check_post(request):
-    if request.method == 'POST':
-        template_name = 'board/succeed.html'
-        form = TodoForm(request.POST)
-        if form.is_valid():
-            todo = form.save(commit=False)
-            todo.todo_save()
-            message = "일정을 추가하였습니다"
-            return render(request, template_name, {"message": message})
-    else:
-        template_name = 'board/insert.html'
-        form = TodoForm
-        return render(request, template_name, {"form": form})
+class Board_delete(generic.DeleteView):
+    model = TodoList
+    success_url = '/board/'
+    context_object_name ='todo'

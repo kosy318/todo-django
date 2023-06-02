@@ -5,12 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9af5f2e7-f979-450d-8350-aea3903b6aa0" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/board/templates/board/board_update.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/board/templates/board/todolist_confirm_delete.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/board/forms.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/board/templates/board/board_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/board/templates/board/board_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/board/templates/board/board_update.html" beforeDir="false" afterPath="$PROJECT_DIR$/board/templates/board/board_update.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/board/templates/board/insert.html" beforeDir="false" afterPath="$PROJECT_DIR$/board/templates/board/insert.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/board/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/board/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/board/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/board/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/todo/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/todo/settings.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +86,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1685610571770</updated>
-      <workItem from="1685610573190" duration="9569000" />
+      <workItem from="1685610573190" duration="14649000" />
     </task>
     <servers />
   </component>

@@ -2,13 +2,32 @@
 {% block main %}
     <div class="container text-center pt-5">
 		<h1>할 일 추가</h1>
+        <br>
 		<form method="POST" class="post-form" action="{%  url 'board:board_insert' %}">
             {% csrf_token %}
-            {{ form.as_p }}
-
+            <div class="row">
+				<div class="form-group text-left col-sm-8">
+					<label for="title">제목</label> <input type="text"
+						class="form-control" name="title" value="{{ form.title.value|default_if_none:'' }}">
+				</div>
+				<div class="form-group text-left col-sm-4">
+					<label for="end_date">종료 날짜 : </label> <input type="date"
+						class="form-control" name="end_date" value="{{ form.end_date.value|default_if_none:'' }}">
+				</div>
+			</div>
+            <div class="form-group text-left">
+                <label for="content">내 용:</label>
+                <textarea class="form-control" rows="2" id="content" name="content" value="{{ form.content.value|default_if_none:'' }}"></textarea>
+            </div>
+            <div class="form-group text-left" style="display: none">
+                <input type="number"
+						class="form-control" name="is_complete" value="{{ form.is_complete.value|default_if_none:0 }}">
+            </div>
+            <br>
 			<button type="submit" class="btn btn-info">Submit</button>
 		</form>
-		<a href="list">리스트 화면</a>
+        <br>
+		<a href="{%  url 'board:board' %}">리스트 화면</a>
 		<br>
 		<br>
 	</div>
