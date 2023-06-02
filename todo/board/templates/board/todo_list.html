@@ -1,67 +1,188 @@
-{%  extends 'main/common/header.html' %} <!-- header.html을 상속하겠다 -->
+{% extends 'main/common/header.html' %}
 {% block main %}
-	<div class="container text-center pt-5">
-		<h1>오늘 할 일</h1>
-		<div class="text-right mb-2">
-			<div class="btn-group">
-				<a type="button" href="{% url 'board:board_insert' %}" class="btn btn-info" role="button">할 일 추가</a>
-{#				<a type="button" href="{% url 'board:board_detail' pk=list.no %}" class="btn btn-info" role="button">전체 삭제</a>#}
-			</div>
-		</div>
-		<form class="form-inline mb-2 float-right" action="searchAll" method="get">
-			<select class="form-control" name="search" id="search" onchange="selectChange()">
-				<option value="content" selected="selected">내용</option>
-				<option value="date">날짜</option>
-			</select>&nbsp;&nbsp; <input id="word" class="form-control mr-sm-2" type="text"
-				name="word">
-			<button class="btn btn-info my-2 my-sm-0" type="submit">검색</button>
-		</form>
-		<br>
+<style>
+.dragging {
+    z-index: 9999;  // 드래그 중인 항목의 z-index 값을 큰 값으로 설정
+}
 
-		<table class="table">
-			<thead>
-				<tr>
-					<th>번호</th>
-					<th>주제</th>
-					<th>날짜</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-                {% for item in todo_list %}
-                    {% with i=forloop.counter0 %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            {% if item.is_complete == False %}
-                                <td><a href="{% url 'board:board_detail' pk=item.no %}">{{ item.title }}</a></td>
-                            {% endif %}
-                            {% if item.is_complete == True %}
-                                <td><a href="{% url 'board:board_detail' pk=item.no %}"><del>{{ item.title }}</del></a></td>
-                            {% endif %}
-                            <td>{{ item.end_date }}</td>
-                            {% if item.is_complete == False %}
-                                <td><input onchange="window.location.href='change?done={{ item.is_complete }}&num={{ item.no }}'"
-                                           class="form-check-input" name="done" type="checkbox"></td>
-                            {% endif %}
-                            {% if item.is_complete == True %}
-                                <td><input onchange="window.location.href='change?done={{ item.is_complete }}&num={{ item.no }}'"
-                                           class="form-check-input" name="done" type="checkbox" checked="checked"></td>
-                            {% endif %}
-                        </tr>
+.list-group {
+    height: 1000px;
+}
+</style>
+
+<div class="container text-center pt-5">
+    <h1>오늘 할 일</h1>
+    <div class="text-right mb-2">
+        <div class="btn-group">
+            <a type="button" href="{% url 'board:board_insert' %}" class="btn btn-info" role="button">할 일 추가</a>
+        </div>
+    </div>
+    <br>
+
+
+{#    {% if over_end_day %}#}
+{#    <div class="alert alert-info">#}
+{#        <strong>마감이 지난 일정!</strong> {{ over_end_day }}#}
+{#    </div>#}
+{#    {% endif %}#}
+{#    {% if close_end_day %}#}
+{#    <div class="alert alert-info">#}
+{#        <strong>마감이 가까운 일정!</strong> {{ close_end_day }}#}
+{#    </div>#}
+{#    {% endif %}#}
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="container">
+                <h2>기한 있는 일정</h2><br>
+                <div id="todo_list_endDate" class="list-group col">
+                    {% for list in todo_list_endDate_non_complete %}
+                    <div class="list-group-item" div_pk="{{ list.no }}" priority="{{ list.priority }}">
+                        <a href="{% url 'board:board_detail' pk=list.no %}">{{ list.title }}</a>
+                        <p>{{ list.end_date }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="container">
+                <h2>기한 없는 일정</h2><br>
+                <div id="todo_list_no_endDate" class="list-group col">
+                    {% with end_date="마감일 없음" %}
+                    {% for list in todo_list_no_endDate %}
+                    <div class="list-group-item" div_pk="{{ list.no }}">
+                        <a href="{% url 'board:board_detail' pk=list.no %}">{{ list.title }}</a>
+                        <p>{{ end_date }}</p>
+                    </div>
+                    {% endfor %}
                     {% endwith %}
-                {% endfor %}
-			</tbody>
-		</table>
-	</div>
+                </div>
+            </div>
+        </div>
 
-	<script>
-		function selectChange(){
-			select = document.querySelector("#search");
-			if(select.value === "date"){
-				document.querySelector("#word").setAttribute("type", "date");
-			}else{
-				document.querySelector("#word").setAttribute("type", "text");
-			}
-		}
-	</script>
+        <div class="col-md-4">
+            <div class="container">
+                <h2>마감된 일정</h2><br>
+                <div class="list-group col" id="completed_list">
+                    {% with end_date="마감일 없음" %}
+                    {% for list in todo_list_endDate_complete %}
+                    {% if list.end_date == None %}
+                    <div class="list-group-item list-group-item-success" div_pk="{{ list.no }}" draggable="true">
+                        <a href="{% url 'board:board_detail' pk=list.no %}">{{ list.title }}</a>
+                        <p>{{ end_date }}</p>
+                    </div>
+                    {% else %}
+                    <div class="list-group-item list-group-item-success" div_pk="{{ list.no }}" draggable="true">
+                        <a href="{% url 'board:board_detail' pk=list.no %}">{{ list.title }}</a>
+                        <p>{{ list.end_date }}</p>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script  src="https://code.jquery.com/jquery-latest.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+
+<script>
+    $(function() {
+        // draggable 및 droppable 설정 함수
+         function makeDraggableAndDroppable(draggable_element, droppable_element, isCompleted) {
+            draggable_element.draggable({
+                revert: "invalid",
+                helper: "original",
+                start: function(event, ui) {
+                    $(this).addClass("dragging"); // 드래그 시작 시 'dragging' 클래스 추가
+                },
+                stop: function(event, ui) {
+                    $(this).removeClass("dragging"); // 드래그 종료 시 'dragging' 클래스 제거
+                }
+            });
+
+            droppable_element.droppable({
+                accept: ".list-group-item",
+                drop: function(event, ui) {
+                    let droppedItem = ui.helper;
+                    let originalItem = ui.draggable;
+
+                    // 드롭한 아이템의 내용
+                    let content = droppedItem.html();
+
+                    if (isCompleted) {
+                        // 마감된 일정에 추가
+                        let newElement = $("<div class='list-group-item list-group-item-success' div_pk='" + originalItem.attr("div_pk") + "'>" + content + "</div>");
+                        $("#completed_list").append(newElement);
+                       makeDraggableAndDroppable($("#completed_list .list-group-item"), $("#completed_list"), true);
+                    } else {
+                        // 마감일이 있는 경우
+                        if (originalItem.find("p").text() !== "마감일 없음") {
+                            // 드롭한 아이템을 기한 있는 일정 목록에 추가
+                            let newElement = $("<div class='list-group-item' div_pk='" + originalItem.attr("div_pk") + "'>" + content + "</div>");
+                            $("#todo_list_endDate").append(newElement);
+                            makeDraggableAndDroppable($("#todo_list_endDate .list-group-item"), $("#todo_list_endDate"), false);
+                        } else {
+                            // 드롭한 아이템을 기한 없는 일정 목록에 추가
+                            let newElement = $("<div class='list-group-item' div_pk='" + originalItem.attr("div_pk") + "'>" + content + "</div>");
+                            $("#todo_list_no_endDate").append(newElement);
+                            makeDraggableAndDroppable($("#todo_list_no_endDate .list-group-item"), $("#todo_list_no_endDate"), false);
+                        }
+                    }
+
+                    // 드래그한 아이템의 원래 위치에서 삭제
+                    originalItem.remove();
+
+                    // is_complete 값을 변경하고 저장
+                    let pk = originalItem.attr("div_pk");
+                    console.log(isCompleted)
+                    updateComplete(pk, isCompleted);
+                }
+            }).draggable({
+                revert: "invalid",
+                helper: "original",
+                start: function(event, ui) {
+                    $(this).addClass("dragging"); // 드래그 시작 시 'dragging' 클래스 추가
+                },
+                stop: function(event, ui) {
+                    $(this).removeClass("dragging"); // 드래그 종료 시 'dragging' 클래스 제거
+                }
+            });
+        }
+
+        // 기한 있는 일정에서 drag 가능하도록 설정
+        makeDraggableAndDroppable($("#todo_list_endDate .list-group-item"), $("#todo_list_endDate"), false);
+
+        // 기한 없는 일정에서 drag 가능하도록 설정
+        makeDraggableAndDroppable($("#todo_list_no_endDate .list-group-item"), $("#todo_list_no_endDate"), false);
+
+        // 마감된 일정에서 drag 가능하도록 설정
+        makeDraggableAndDroppable($("#completed_list .list-group-item"), $("#completed_list"), true);
+
+        // is_complete 값을 변경하고 저장하는 함수
+        function updateComplete(pk, isComplete) {
+            $.ajax({
+                type: "POST",
+                url: "{% url 'board:update_complete' %}",
+                data: {
+                    pk: pk,
+                    is_complete: isComplete,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    console.log("is_complete updated to " + isComplete);
+                },
+                error: function(xhr, errmsg, err) {
+                    console.log("Failed to update is_complete");
+                }
+            });
+        }
+    });
+</script>
+
 {% endblock main %}
